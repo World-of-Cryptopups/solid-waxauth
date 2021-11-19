@@ -9,7 +9,7 @@ const AuthContainer = () => {
 
   return (
     <div>
-      <p>user: {isLoggedIn() ? state.user.wallet : "none"}</p>
+      <p>user: {isLoggedIn() ? state.user?.wallet : "none"}</p>
 
       {isLoggedIn() ? (
         <button onClick={() => logout()}>logout</button>

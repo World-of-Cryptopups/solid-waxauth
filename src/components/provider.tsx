@@ -76,6 +76,7 @@ const WaxAuthProvider: Component<WaxAuthProviderProps> = (props: WaxAuthProvider
     }
 
     setState({ user: null });
+    setIsLoggedIn(false);
   };
 
   createEffect(() => {
