@@ -1,4 +1,7 @@
+import { LinkSession } from "anchor-link";
+import { Api, JsonRpc } from "eosjs";
 import { Accessor } from "solid-js";
+import { WAXNET_PROPS } from "../lib/chain";
 
 interface IWaxCloudWalletUser {
   type: "wax-cloud-wallet";
@@ -26,6 +29,11 @@ interface WAXCONTEXTPROPS {
   state: IWAXWALLETPROPS;
   isLoggedIn: Accessor<boolean>;
   functions: IWAXFUNCTIONPROPS;
+  wax: {
+    net: WAXNET_PROPS;
+  };
+  getSession: (user: IWaxUserProps | null) => Promise<Api | LinkSession | null | undefined>;
+  rpc?: JsonRpc;
 }
 
 type IWaxUserProps = IWaxCloudWalletUser | IAnchorUser;

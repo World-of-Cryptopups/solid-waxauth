@@ -1,3 +1,4 @@
+import { WaxJS } from "@waxio/waxjs/dist";
 import { LinkSession } from "anchor-link";
 import { Component, createContext, createEffect, createSignal, JSX } from "solid-js";
 import { createStore } from "solid-js/store";
@@ -10,7 +11,15 @@ const LOCALKEY = "waxuser-storage";
 const WaxContext = createContext<WAXCONTEXTPROPS>({
   state: { user: null },
   isLoggedIn: (): boolean => false,
-  functions: { loginWithAnchor: () => {}, loginWithCloudWalet: () => {}, logout: () => {} }
+  functions: { loginWithAnchor: () => {}, loginWithCloudWalet: () => {}, logout: () => {} },
+  wax: {
+    net: {
+      endpoint: "",
+      chainId: "",
+      dApp: ""
+    }
+  },
+  getSession: async () => null
 });
 
 interface WaxAuthProviderProps {
@@ -28,6 +37,7 @@ const WaxAuthProvider: Component<WaxAuthProviderProps> = (props: WaxAuthProvider
   );
   const [isLoggedIn, setIsLoggedIn] = createSignal(false);
 
+  // anchor login
   const loginWithAnchor = async () => {
     let session: LinkSession | null;
 
@@ -54,6 +64,7 @@ const WaxAuthProvider: Component<WaxAuthProviderProps> = (props: WaxAuthProvider
     });
   };
 
+  // wax cloud wallet login
   const loginWithCloudWalet = async () => {
     const waxwallet = wax(props.net.endpoint);
 
@@ -67,8 +78,12 @@ const WaxAuthProvider: Component<WaxAuthProviderProps> = (props: WaxAuthProvider
     setState({ user });
   };
 
+  // logout
   const logout = () => {
-    if (state.user?.type === "anchor") {
+    if (!state.user) return;
+
+    // if current logged in is anchor
+    if (state.user.type === "anchor") {
       const anchor = anchorLink(props.net.endpoint, props.net.chainId);
 
       anchor.clearSessions(props.net.dApp);
@@ -76,6 +91,31 @@ const WaxAuthProvider: Component<WaxAuthProviderProps> = (props: WaxAuthProvider
 
     setState({ user: null });
   };
+
+  // session transact handler
+  const getSession = async (user: IWaxUserProps | null) => {
+    if (user == null) return;
+
+    if (user.type === "wax-cloud-wallet") {
+      return new WaxJS({
+        rpcEndpoint: props.net.endpoint,
+        userAccount: user.wallet,
+        pubKeys: user.pubKeys
+      }).api;
+    }
+
+    if (user.type === "anchor") {
+      const sess = await anchorLink(props.net.endpoint, props.net.chainId).restoreSession(
+        props.net.dApp
+      );
+
+      return sess;
+    }
+
+    throw new Error("Unsupported wallet type!");
+  };
+
+  const rpc = wax(props.net.endpoint).rpc;
 
   createEffect(() => {
     localStorage.setItem(LOCALKEY, JSON.stringify(state));
@@ -94,13 +134,15 @@ const WaxAuthProvider: Component<WaxAuthProviderProps> = (props: WaxAuthProvider
         state,
         isLoggedIn,
         functions: {
-          // anchor login
           loginWithAnchor,
-          // cloud wallet login
           loginWithCloudWalet,
-          // logout
           logout
-        }
+        },
+        wax: {
+          net: props.net
+        },
+        getSession,
+        rpc
       }}
     >
       {props.children}

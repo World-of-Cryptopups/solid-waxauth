@@ -1,5 +1,5 @@
+import { WaxAuthProvider } from "@cryptopuppie/solid-waxauth";
 import { render } from "solid-js/web";
-import { WaxAuthProvider } from "solid-waxauth";
 import App from "./App";
 import "./index.css";
 

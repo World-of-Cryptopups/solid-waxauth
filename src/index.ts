@@ -1,6 +1,5 @@
 import WaxAuthProvider from "./components/provider";
 import useWaxAuth from "./hooks/useWaxAuth";
-import createUserSource from "./store/createSource";
 import {
   IAnchorUser,
   IWaxCloudWalletUser,
@@ -11,7 +10,7 @@ import {
 } from "./typings/user";
 
 // export main functions or stuffs
-export { WaxAuthProvider, createUserSource, useWaxAuth };
+export { WaxAuthProvider, useWaxAuth };
 // export types
 export type {
   WAXCONTEXTPROPS,
