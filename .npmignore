@@ -1,0 +1,7 @@
+example
+src
+node_modules
+tsconfig.json
+
+.vscode
+*config.js
