@@ -1,9 +1,15 @@
 {
-  "name": "solid-waxauth",
-  "version": "1.0.0",
-  "description": "",
-  "keywords": [],
-  "author": "",
+  "name": "@cryptopuppie/solid-waxauth",
+  "version": "0.0.1",
+  "description": "Wax authenticator for Solid.js framework.",
+  "keywords": [
+    "solid",
+    "solidjs-waxauth",
+    "waxauth",
+    "solidjs wax authentication",
+    "solidjs wax"
+  ],
+  "author": "TheBoringDude (iamcoderx@gmail.com)",
   "license": "ISC",
   "type": "module",
   "main": "dist/index.js",
