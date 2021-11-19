@@ -65,7 +65,6 @@ const WaxAuthProvider: Component<WaxAuthProviderProps> = (props: WaxAuthProvider
 
   const login = (user: IWaxUserProps) => {
     setState({ user });
-    setIsLoggedIn(true);
   };
 
   const logout = () => {
@@ -76,7 +75,6 @@ const WaxAuthProvider: Component<WaxAuthProviderProps> = (props: WaxAuthProvider
     }
 
     setState({ user: null });
-    setIsLoggedIn(false);
   };
 
   createEffect(() => {
