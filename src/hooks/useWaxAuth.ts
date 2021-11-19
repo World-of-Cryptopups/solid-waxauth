@@ -1,10 +1,10 @@
 import { useContext } from "solid-js";
-import { WaxContext } from "../components/context";
+import { WaxContext } from "../components/provider";
 
 const useWaxAuth = () => {
   const context = useContext(WaxContext);
 
-  return context?.functions;
+  return context;
 };
 
 export default useWaxAuth;

@@ -1,4 +1,4 @@
-import WAXUSER from "../lib/user";
+import { Accessor } from "solid-js";
 
 interface IWaxCloudWalletUser {
   type: "wax-cloud-wallet";
@@ -13,8 +13,7 @@ interface IAnchorUser {
 }
 
 interface IWAXWALLETPROPS {
-  user?: WAXUSER;
-  isLoggedIn: boolean;
+  user: IWaxUserProps | null;
 }
 
 interface IWAXFUNCTIONPROPS {
@@ -24,7 +23,8 @@ interface IWAXFUNCTIONPROPS {
 }
 
 interface WAXCONTEXTPROPS {
-  auth: IWAXWALLETPROPS;
+  state: IWAXWALLETPROPS;
+  isLoggedIn: Accessor<boolean>;
   functions: IWAXFUNCTIONPROPS;
 }
 

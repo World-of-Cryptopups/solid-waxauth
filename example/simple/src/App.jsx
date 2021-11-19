@@ -1,5 +1,6 @@
-import logo from "./logo.svg";
 import styles from "./App.module.css";
+import AuthContainer from "./auth";
+import logo from "./logo.svg";
 
 function App() {
   return (
@@ -9,6 +10,9 @@ function App() {
         <p>
           Edit <code>src/App.jsx</code> and save to reload.
         </p>
+
+        <AuthContainer />
+
         <a
           class={styles.link}
           href="https://github.com/solidjs/solid"
