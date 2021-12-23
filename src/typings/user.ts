@@ -20,9 +20,9 @@ interface IWAXWALLETPROPS {
 }
 
 interface IWAXFUNCTIONPROPS {
-  loginWithCloudWalet: () => void;
-  loginWithAnchor: () => void;
-  logout: () => void;
+  loginWithCloudWalet: () => Promise<void>;
+  loginWithAnchor: () => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 interface WAXCONTEXTPROPS {

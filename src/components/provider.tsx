@@ -11,7 +11,11 @@ const LOCALKEY = "waxuser-storage";
 const WaxContext = createContext<WAXCONTEXTPROPS>({
   state: { user: null },
   isLoggedIn: (): boolean => false,
-  functions: { loginWithAnchor: () => {}, loginWithCloudWalet: () => {}, logout: () => {} },
+  functions: {
+    loginWithAnchor: async () => {},
+    loginWithCloudWalet: async () => {},
+    logout: async () => {}
+  },
   wax: {
     net: {
       endpoint: "",
@@ -57,10 +61,12 @@ const WaxAuthProvider: Component<WaxAuthProviderProps> = (props: WaxAuthProvider
 
     if (!session) return;
 
-    login({
-      type: "anchor",
-      wallet: String(session.auth.actor),
-      permission: String(session.auth.permission)
+    setState({
+      user: {
+        type: "anchor",
+        wallet: String(session.auth.actor),
+        permission: String(session.auth.permission)
+      }
     });
   };
 
@@ -71,24 +77,25 @@ const WaxAuthProvider: Component<WaxAuthProviderProps> = (props: WaxAuthProvider
     const userAccount = await waxwallet.login();
     const pubKeys = waxwallet.pubKeys;
 
-    login({ type: "wax-cloud-wallet", wallet: userAccount, pubKeys });
-  };
-
-  const login = (user: IWaxUserProps) => {
-    setState({ user });
+    setState({ user: { type: "wax-cloud-wallet", wallet: userAccount, pubKeys } });
   };
 
   // logout
-  const logout = () => {
+  const logout = async () => {
     if (!state.user) return;
 
     // if current logged in is anchor
     if (state.user.type === "anchor") {
       const anchor = anchorLink(props.net.endpoint, props.net.chainId);
 
-      anchor.clearSessions(props.net.dApp);
+      await anchor.clearSessions(props.net.dApp);
     }
 
+    // remove localstorage key
+    window.localStorage.removeItem(LOCALKEY);
+
+    // update states
+    setIsLoggedIn(false); // for some reason, the createEffect is not being called with the below setstate
     setState({ user: null });
   };
 
