@@ -1,6 +1,6 @@
 {
   "name": "@cryptopuppie/solid-waxauth",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Wax authenticator for Solid.js framework.",
   "keywords": [
     "solid",
